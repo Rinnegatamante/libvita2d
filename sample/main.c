@@ -21,7 +21,7 @@ extern unsigned char _binary_image_png_end;
 
 int main()
 {
-	sceSysmoduleLoadModule(SCE_SYSMODULE_RAZOR_CAPTURE);
+	//sceSysmoduleLoadModule(SCE_SYSMODULE_RAZOR_CAPTURE);
 	SceCtrlData pad;
 	vita2d_pgf *pgf;
 	vita2d_pvf *pvf;
