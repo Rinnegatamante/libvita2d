@@ -1,7 +1,7 @@
 #ifndef TEXTURE_ATLAS_H
 #define TEXTURE_ATLAS_H
 
-#include "vita2d.h"
+#include "vita2d_vgl.h"
 #include "bin_packing_2d.h"
 #include "int_htab.h"
 

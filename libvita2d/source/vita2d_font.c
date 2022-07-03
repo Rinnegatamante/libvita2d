@@ -5,11 +5,10 @@
 #include <freetype2/ft2build.h>
 #include FT_CACHE_H
 #include FT_FREETYPE_H
-#include "vita2d.h"
+#include "vita2d_vgl.h"
 #include "texture_atlas.h"
 #include "bin_packing_2d.h"
 #include "utils.h"
-#include "shared.h"
 
 #define ATLAS_DEFAULT_W 512
 #define ATLAS_DEFAULT_H 512
@@ -96,7 +95,7 @@ vita2d_font *vita2d_load_font_file(const char *filename)
 	font->load_from = VITA2D_LOAD_FONT_FROM_FILE;
 
 	font->atlas = texture_atlas_create(ATLAS_DEFAULT_W, ATLAS_DEFAULT_H,
-		SCE_GXM_TEXTURE_FORMAT_U8_R111);
+		SCE_GXM_TEXTURE_FORMAT_U8_R);
 
 	return font;
 }
@@ -139,7 +138,7 @@ vita2d_font *vita2d_load_font_mem(const void *buffer, unsigned int size)
 	font->load_from = VITA2D_LOAD_FONT_FROM_MEM;
 
 	font->atlas = texture_atlas_create(ATLAS_DEFAULT_W, ATLAS_DEFAULT_H,
-		SCE_GXM_TEXTURE_FORMAT_U8_R111);
+		SCE_GXM_TEXTURE_FORMAT_U8_R);
 
 	return font;
 }

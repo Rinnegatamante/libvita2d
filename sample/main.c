@@ -10,34 +10,42 @@
 #include <psp2/ctrl.h>
 #include <psp2/kernel/processmgr.h>
 
-#include <vita2d.h>
+#include <vitaGL.h>
+#include <vita2d_vgl.h>
 
 /*
  * Symbol of the image.png file
  */
 extern unsigned char _binary_image_png_start;
+extern unsigned char _binary_image_png_end;
 
 int main()
 {
+	sceSysmoduleLoadModule(SCE_SYSMODULE_RAZOR_CAPTURE);
 	SceCtrlData pad;
 	vita2d_pgf *pgf;
 	vita2d_pvf *pvf;
 	vita2d_texture *image;
 	float rad = 0.0f;
 
+	vglInitExtended(0, 960, 544, 12 * 1024 * 1024, SCE_GXM_MULTISAMPLE_4X);
 	vita2d_init();
 	vita2d_set_clear_color(RGBA8(0x40, 0x40, 0x40, 0xFF));
 
+	printf("loading pgf\n");
 	pgf = vita2d_load_default_pgf();
+	printf("loading pvf\n");
 	pvf = vita2d_load_default_pvf();
 
 	/*
 	 * Load the statically compiled image.png file.
 	 */
-	image = vita2d_load_PNG_buffer(&_binary_image_png_start);
+	printf("loading image of size %d\n", &_binary_image_png_end - &_binary_image_png_start);
+	image = vita2d_load_PNG_buffer(&_binary_image_png_start, &_binary_image_png_end - &_binary_image_png_start);
 
 	memset(&pad, 0, sizeof(pad));
 
+	printf("entering main loop\n");
 	while (1) {
 		sceCtrlPeekBufferPositive(0, &pad, 1);
 
@@ -59,7 +67,7 @@ int main()
 
 		vita2d_pvf_draw_text(pvf, 700, 80, RGBA8(0,255,0,255), 1.0f, "PVF Font sample!");
 
-		size_t n_vertices = 69;
+		/*size_t n_vertices = 69;
 		vita2d_color_vertex *vertices = (vita2d_color_vertex *)vita2d_pool_memalign(
 			n_vertices * sizeof(vita2d_color_vertex),
 			sizeof(vita2d_color_vertex));
@@ -71,9 +79,9 @@ int main()
 			vertices[i].color = RGBA8(0xff-i*2, i*3, 0x8a-2*i, 0x80);
 		}
 
-		vita2d_draw_array(SCE_GXM_PRIMITIVE_TRIANGLE_STRIP, vertices, n_vertices);
+		vita2d_draw_array(SCE_GXM_PRIMITIVE_TRIANGLE_STRIP, vertices, n_vertices);*/
 
-		size_t nslices = 50;
+		/*size_t nslices = 50;
 		size_t n_tvertices = 6 * nslices;
 		vita2d_texture_vertex *tvertices = (vita2d_texture_vertex *)vita2d_pool_memalign(
 			n_tvertices * sizeof(vita2d_texture_vertex),
@@ -95,7 +103,7 @@ int main()
 			tvertices[i].z = 0.5f;
 		}
 
-		vita2d_draw_array_textured(image, SCE_GXM_PRIMITIVE_TRIANGLES, tvertices, n_tvertices, RGBA8(0xFF, 0xFF, 0xFF, 0xFF));
+		vita2d_draw_array_textured(image, SCE_GXM_PRIMITIVE_TRIANGLES, tvertices, n_tvertices, RGBA8(0xFF, 0xFF, 0xFF, 0xFF));*/
 
 		vita2d_draw_rectangle(40, 40, 100, 100, RGBA8(128, 64, 192, 255));
 		vita2d_set_blend_mode_add(1);

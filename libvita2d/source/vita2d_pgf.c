@@ -1,17 +1,15 @@
-#include <psp2/pgf.h>
-#include <psp2/kernel/sysmem.h>
-#include <psp2/kernel/threadmgr.h>
+#include <vitasdk.h>
+#include <vitaGL.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <malloc.h>
 #include <math.h>
-#include "vita2d.h"
+#include "vita2d_vgl.h"
 #include "texture_atlas.h"
 #include "bin_packing_2d.h"
 #include "utils.h"
-#include "shared.h"
 
 #define ATLAS_DEFAULT_W 512
 #define ATLAS_DEFAULT_H 512
@@ -32,12 +30,12 @@ typedef struct vita2d_pgf {
 
 static void *pgf_alloc_func(void *userdata, unsigned int size)
 {
-	return memalign(sizeof(int), (size + sizeof(int) - 1) / sizeof(int) * sizeof(int) );
+	return vglMemalign(sizeof(int), (size + sizeof(int) - 1) / sizeof(int) * sizeof(int) );
 }
 
 static void pgf_free_func(void *userdata, void *p)
 {
-	free(p);
+	vglFree(p);
 }
 
 static void vita2d_load_pgf_post(vita2d_pgf *font) {
@@ -48,7 +46,7 @@ static void vita2d_load_pgf_post(vita2d_pgf *font) {
 		* SCREEN_DPI;
 
 	font->atlas = texture_atlas_create(ATLAS_DEFAULT_W, ATLAS_DEFAULT_H,
-		SCE_GXM_TEXTURE_FORMAT_U8_R111);
+		SCE_GXM_TEXTURE_FORMAT_U8_R);
 
 	sceKernelCreateLwMutex(&font->mutex, "vita2d_pgf_mutex", 2, 0, NULL);
 }

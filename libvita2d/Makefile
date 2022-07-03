@@ -1,18 +1,12 @@
-TARGET_LIB = libvita2d.a
-OBJS       = source/vita2d.o source/vita2d_texture.o source/vita2d_draw.o source/utils.o \
-             source/vita2d_image_png.o source/vita2d_image_jpeg.o source/vita2d_image_bmp.o \
-             source/vita2d_font.o source/vita2d_pgf.o source/vita2d_pvf.o \
-             source/bin_packing_2d.o source/texture_atlas.o source/int_htab.o
+TARGET_LIB = libvita2d_vgl.a
+OBJS       = source/vita2d.o source/int_htab.o source/vita2d_pgf.o source/vita2d_pvf.o \
+	source/vita2d_font.o source/texture_atlas.o source/bin_packing_2d.o source/utils.o
 INCLUDES   = include
-SHADERS    = shader/compiled/clear_v_gxp.o shader/compiled/clear_f_gxp.o \
-             shader/compiled/color_v_gxp.o shader/compiled/color_f_gxp.o \
-             shader/compiled/texture_v_gxp.o shader/compiled/texture_f_gxp.o \
-             shader/compiled/texture_tint_f_gxp.o
 
 PREFIX  ?= ${VITASDK}/arm-vita-eabi
 CC      = arm-vita-eabi-gcc
 AR      = arm-vita-eabi-ar
-CFLAGS  = -Wl,-q -Wall -O3 -I$(INCLUDES) -I$(VITASDK)/arm-vita-eabi/include/freetype2 -ffat-lto-objects -flto
+CFLAGS  = -Wl,-q -Wall -O3 -I$(INCLUDES) -I$(VITASDK)/arm-vita-eabi/include/freetype2
 ASFLAGS = $(CFLAGS)
 
 all: $(TARGET_LIB)
@@ -20,7 +14,7 @@ all: $(TARGET_LIB)
 debug: CFLAGS += -DDEBUG_BUILD
 debug: all
 
-$(TARGET_LIB): $(SHADERS) $(OBJS)
+$(TARGET_LIB): $(OBJS)
 	$(AR) -rc $@ $^
 
 clean:
@@ -30,4 +24,4 @@ install: $(TARGET_LIB)
 	@mkdir -p $(DESTDIR)$(PREFIX)/lib/
 	cp $(TARGET_LIB) $(DESTDIR)$(PREFIX)/lib/
 	@mkdir -p $(DESTDIR)$(PREFIX)/include/
-	cp include/vita2d.h $(DESTDIR)$(PREFIX)/include/
+	cp include/vita2d_vgl.h $(DESTDIR)$(PREFIX)/include/
