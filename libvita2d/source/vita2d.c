@@ -220,6 +220,21 @@ void vita2d_draw_fill_circle(float x, float y, float radius, unsigned int color)
 	glDrawElements(GL_TRIANGLE_FAN, v2d_num_circle_segments + 2, GL_UNSIGNED_SHORT, v2d_circle_indices);
 }
 
+uint32_t bpp_from_format(SceGxmTextureFormat format) {
+	switch (format) {
+	case SCE_GXM_TEXTURE_FORMAT_U8_R:
+		return 1;
+	case SCE_GXM_TEXTURE_FORMAT_U5U6U5_RGB:
+	case SCE_GXM_TEXTURE_FORMAT_U4U4U4U4_RGBA:
+	case SCE_GXM_TEXTURE_FORMAT_U5U5U5U1_RGBA:
+		return 2;
+	case SCE_GXM_TEXTURE_FORMAT_U8U8U8_RGB:
+		return 3;
+	default:
+		return 4;
+	}
+}
+
 vita2d_texture *vita2d_create_empty_texture_format(unsigned int w, unsigned int h, SceGxmTextureFormat format) {
 	vita2d_texture *r = (vita2d_texture *)vglMalloc(sizeof(vita2d_texture));
 	glGenTextures(1, &r->tex_id);
@@ -294,7 +309,7 @@ unsigned int vita2d_texture_get_height(const vita2d_texture *texture) {
 }
 
 unsigned int vita2d_texture_get_stride(const vita2d_texture *texture) {
-	return ALIGN(texture->w, 8);
+	return ALIGN(texture->w, 8) * bpp_from_format(texture->format);
 }
 
 SceGxmTextureFormat vita2d_texture_get_format(const vita2d_texture *texture) {
