@@ -110,10 +110,10 @@ int vita2d_common_dialog_update() {
 }
 
 void vita2d_set_clear_color(unsigned int color) {
-	v2d_clear_color[0] = ((color >> 8*0) & 0xFF)/255.0f;
-	v2d_clear_color[1] = ((color >> 8*1) & 0xFF)/255.0f;
-	v2d_clear_color[2] = ((color >> 8*2) & 0xFF)/255.0f;
-	v2d_clear_color[3] = ((color >> 8*3) & 0xFF)/255.0f;
+	v2d_clear_color[0] = (float)((color) & 0xFF)/255.0f;
+	v2d_clear_color[1] = (float)((color >> 8) & 0xFF)/255.0f;
+	v2d_clear_color[2] = (float)((color >> 16) & 0xFF)/255.0f;
+	v2d_clear_color[3] = (float)((color >> 24) & 0xFF)/255.0f;
 	v2d_clear_color_u32 = color;
 }
 
