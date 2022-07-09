@@ -93,6 +93,8 @@ void vita2d_start_drawing() {
 	glDisable(GL_ALPHA_TEST);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_STENCIL_TEST);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_FOG);
 }
 
 void vita2d_start_drawing_advanced(vita2d_texture *target, unsigned int flags) {
